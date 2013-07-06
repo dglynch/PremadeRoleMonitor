@@ -1,6 +1,6 @@
 ## Title:       Premade Role Monitor
 ## Notes:       Monitors role checks for LFR and LFD premades.
-## Version:     1.0
+## Version:     1.0.1
 ## Author:      Dan Lynch
 ## Interface:   50300
 
