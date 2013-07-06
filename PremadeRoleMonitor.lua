@@ -65,6 +65,11 @@ local function redrawFrame()
                     local rowFrame =
                         _G["PremadeRoleMonitorRow" .. rowIndex];
 
+                    if (rowFrame == nil) then
+                        -- don't try to write to a non-existent row
+                        break;
+                    end
+
                     rowFrame.name.text:SetText(name);
                     rowFrame.name.name = name;
                     rowFrame.chosenRoles:SetText(rolesChosen);
@@ -94,6 +99,18 @@ local function redrawFrame()
                     end
                 end
             end
+        end
+
+        while (rowIndex <= MAX_ROWS) do
+            -- blank the remaining rows
+            local rowFrame =
+                _G["PremadeRoleMonitorRow" .. rowIndex];
+
+            rowFrame.name.text:SetText(name);
+            rowFrame.name.name = name;
+            rowFrame.chosenRoles:SetText(rolesChosen);
+            rowFrame:Show();
+            rowIndex = rowIndex + 1;
         end
 
         if (nonDamagerCount >
