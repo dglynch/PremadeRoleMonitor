@@ -65,6 +65,11 @@ local function redrawFrame()
                     local rowFrame =
                         _G["PremadeRoleMonitorRow" .. rowIndex];
 
+                    if (rowFrame == nil) then
+                        -- don't try to write to a non-existent row
+                        break;
+                    end
+
                     rowFrame.name.text:SetText(name);
                     rowFrame.name.name = name;
                     rowFrame.chosenRoles:SetText(rolesChosen);
@@ -94,6 +99,18 @@ local function redrawFrame()
                     end
                 end
             end
+        end
+
+        while (rowIndex <= MAX_ROWS) do
+            -- blank the remaining rows
+            local rowFrame =
+                _G["PremadeRoleMonitorRow" .. rowIndex];
+
+            rowFrame.name.text:SetText(name);
+            rowFrame.name.name = name;
+            rowFrame.chosenRoles:SetText(rolesChosen);
+            rowFrame:Show();
+            rowIndex = rowIndex + 1;
         end
 
         if (nonDamagerCount >
@@ -200,6 +217,17 @@ local function processRoleCheckRoleChosen(player, isTank, isHealer, isDamage)
     end
     if (isDamage) then
         rolesChosen = rolesChosen .. INLINE_DAMAGER_ICON;
+    end
+
+    if (data[player] == nil) then
+        -- this is a cross-realm player so we have to guess who it is
+        for name, rc in pairs(data) do
+            if (string.find(name, player, 1, true) == 1 and rc == "") then
+                -- this is probably the right character
+                player = name;
+                break;
+            end
+        end
     end
 
     data[player] = rolesChosen;
