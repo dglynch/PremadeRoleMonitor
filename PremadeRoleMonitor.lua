@@ -219,6 +219,17 @@ local function processRoleCheckRoleChosen(player, isTank, isHealer, isDamage)
         rolesChosen = rolesChosen .. INLINE_DAMAGER_ICON;
     end
 
+    if (data[player] == nil) then
+        -- this is a cross-realm player so we have to guess who it is
+        for name, rc in pairs(data) do
+            if (string.find(name, player, 1, true) == 1 and rc == "") then
+                -- this is probably the right character
+                player = name;
+                break;
+            end
+        end
+    end
+
     data[player] = rolesChosen;
 end
 
